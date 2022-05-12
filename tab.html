@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/underscore@1.13.3/underscore-umd-min.js"></script>
+    <script src="dirPagination.js"></script> 
+    <script src="script.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body ng-app="myApp" ng-controller="myController">
+    <section>
+        <ul>
+            <li class = "li_tab li_hocSinh">
+                <a href ng-click="change_Tab_Hoc_Sinh()">Hoc Sinh</a>
+            </li>
+            <li class = "li_tab li_lop">
+                <a href ng-click="change_Tab_Lop()">Lop</a>
+            </li>
+        </ul>
+    </section>
+    <section>
+        <div ng-show="main">
+            <input type="text" placeholder="Ho ten" ng-model="inputData.hoTen">
+            <input type="number" placeholder="Tuoi" ng-model="inputData.tuoi">
+            <select ng-model="inputData.lop">
+                <option ng-repeat="lophoc in lop_y">{{lophoc}}</option>
+            </select>
+            <button ng-click="applySearch()">Tim kiem</button>
+            <button ng-click="add()">Them hoc sinh</button>
+            <table border="1" width="731px">
+                <tr>
+                    <td>#</td>
+                    <td>Ho va ten</td>
+                    <td>Tuoi</td>
+                    <td>Lop</td>
+                    <td>Thao tac</td>
+                </tr>
+                <!-- <tr ng-repeat="hs in hocSinh | filter: data"> -->
+                <tr ng-repeat="hs in hocSinh">
+                    <td>{{$index + 1}}</td>
+                    <td width=40%>{{hs.hoTen}}</td>
+                    <td>{{calculateAge(hs.tuoi)}}</td>
+                    <!-- <td>{{calculateAge()}}</td> -->
+                    <td>{{hs.lop}}</td>
+                    <td align="center" width="100px">
+                        <button ng-click="edit(hs)">Sua</button>
+                        <button ng-click="delete(hs)">Xoa</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div ng-hide="change_Main_Add">
+            <h1>Them hoc sinh</h1>
+            <input type="text" placeholder="Ho ten" ng-model="hoTen"><br>
+            <input style="width : 165px" type="date" ng-model="tuoi"><br>
+            <select ng-model="lop">
+                <option ng-repeat="lop in Class">{{lop}}</option>
+            </select>
+            <button ng-click="saveAdd(hoTen, tuoi, lop)">Luu</button>
+        </div>
+        <div ng-hide="change_Main_Edit">
+            <h1>Sua hoc sinh</h1>
+            <input type="text" ng-model="hs.hoTen"><br>
+            <input type="date" ng-model="hs.tuoi"><br>
+            <select ng-model="hs.lop">
+                <option ng-repeat="lop in Class">{{lop}}</option>
+            </select>
+            <button ng-click="saveEdit()">Luu</button>
+        </div>
+    </section>
+    <section>
+        <div ng-hide="extra">
+            <button ng-click="addClass()"">Tao lop</button>
+            <table border=" 1" width="700px">
+                <tr>
+                    <td>#</td>
+                    <td width="70%">Lop</td>
+                    <td>Thao tac</td>
+                </tr>
+                <tr dir-paginate="h in lop_x|itemsPerPage:5">
+                    <td>{{$index + 1}}</td>
+                    <td>{{h.tenLop}}</td>
+                    <td align="center">
+                        <button ng-click="editClass(h)">Sua</button>
+                        <button ng-click="deleteClass(h)">Xoa</button>
+                    </td>
+                </tr>
+                </table>
+                <dir-pagination-controls class = "dir" max-size="5" direction-links="true" boundary-links="true">
+                </dir-pagination-controls>
+        </div>
+        <div ng-hide="change_Extra_Add">
+            <h1>Them lop</h1>
+            Ten lop:<input type="text" ng-model="tenLop" placeholder="Lop10A1"><br>
+            Thuoc: &nbsp<select ng-model="thuoc">
+                <option ng-repeat="khoi in khoi">{{khoi}}</option>
+            </select>
+            <button ng-click="saveAddClass(tenLop, thuoc)">Luu</button>
+        </div>
+
+        <div ng-hide="change_Extra_Edit">
+            <h1>Sua lop</h1>
+            Ten lop:<input type="text" ng-model="h.tenLop" placeholder="Lop10A1"><br>
+            Thuoc: &nbsp<select ng-model="h.thuoc">
+                <option ng-repeat="khoi in khoi">{{khoi}}</option>
+            </select>
+            <button ng-click="saveEditClass()">Luu</button>
+        </div>
+    </section>
+
+</body>
+
+</html>
